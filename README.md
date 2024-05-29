@@ -7,9 +7,10 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 - Python (versión 3.6 o superior)
 - `pip` (gestor de paquetes de Python)
 - `virtualenv` (puede instalarse con `pip install virtualenv` si no lo tienes)
+- Tener levantado Captura y CIPE
 
-## Pasos para la Instalación
-# Crear la Carpeta "airflow", una Variable desde la Interfaz Web de Airflow
+## Pasos para la Instalación de Airflow y Configuraciones para la Sincronización de Datos
+### Crear la Carpeta "airflow", una Variable desde la Interfaz Web de Airflow
 
 1. Desde la línea de comandos, crea la carpeta "airflow" y dentro "dags" en el directorio deseado. Por ejemplo:/home/tu-user/airflow/dags
 
@@ -27,7 +28,6 @@ cp captura_data.env ~/airflow/dags
 cp cipe_data.env ~/airflow/dags
 cp test-airflow.py ~/airflow/dags
 ```
-
 ### Crear y Activar un Entorno Virtual
 - Crear un nuevo entorno virtual llamado "airflow_env"
 ```
@@ -75,6 +75,35 @@ source airflow_env/bin/activate
 ```
 ```
 airflow scheduler
+```
+### Crear formulario en Captura
+Campos necesarios para formulario de prueba de bache:
+- Descripción (caja de texto)
+- Tipo de ruta (desplegable)
+- Ubicación (location)
+
+### Personalizar captura_data.env de acuerdo a sus datos
+- Obtener las ids y versiones deseadas desde la API de captura
+```
+CAPTURA_LOGIN=http://localhost:8080/mf/api/authentication/login
+CAPTURA_LIST=http://localhost:8080/mf/api/document/list
+FORM_ID=5
+VERSION=1
+ROW_ID=0
+ROWS=100
+CAPTURA_USER=chake@feltesq.com
+CAPTURA_PASSWORD=123456
+DESCRIPTION = element15
+TYPE_OF_ROAD = element14
+ALTITUDE = element13
+```
+### Personalizar cipe_data.env de acuerdo a sus datos
+- observación: superuser se crea al levantar cipe
+```
+CIPE_POST=http://localhost:8000/api/scientist/
+CIPE_TOKEN=http://localhost:8000/api/get-user-token/
+CIPE_USER=superuser
+CIPE_PASSWORD=superuser
 ```
 
 ### Crear Variable "processes_ids" desde la Interfaz Web de Airflow
