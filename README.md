@@ -6,28 +6,18 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
 - Python (versión 3.6 o superior)
 - `pip` (gestor de paquetes de Python)
-- `virtualenv` (puede instalarse con `pip install virtualenv` si no lo tienes)
+- `virtualenv` (puede instalarse con `apt-get install virtualenv` si no lo tienes)
 - Tener levantado Captura y CIPE
 
 ## Pasos para la Instalación de Airflow y Configuraciones para la Sincronización de Datos
 ### Crear la Carpeta "airflow", una Variable desde la Interfaz Web de Airflow
 
-1. Desde la línea de comandos, crea la carpeta "airflow" y dentro "dags" en el directorio deseado. Por ejemplo:/home/tu-user/airflow/dags
+1. Desde la línea de comandos, crea la carpeta "airflow". Por ejemplo:/home/tu-user/airflow
 
 ```
 mkdir /home/tu-user/airflow/dags
 ```
-### clonar el siguiente repositorio
-```
-git clone https://github.com/Christian-Arce/Captura-Cipe-DataFlow.git
-```
 
-### Copiar el contenido clonado a dags
-```
-cp captura_data.env ~/airflow/dags
-cp cipe_data.env ~/airflow/dags
-cp test-airflow.py ~/airflow/dags
-```
 ### Crear y Activar un Entorno Virtual
 - Crear un nuevo entorno virtual llamado "airflow_env"
 ```
@@ -38,17 +28,25 @@ virtualenv airflow_env
 ```
 source airflow_env/bin/activate
 ```
+### Clonar el siguiente repositorio dentro de la carpeta "airflow"
+```
+git clone https://github.com/Christian-Arce/Captura-Cipe-DataFlow.git
+```
+### Renombrar la carpeta clonada "Captura-Cipe-Dataflow" a "dags"
+```
+mv Captura-Cipe-Dataflow dags
+```
 ### Definir la variable de entorno AIRFLOW_HOME
 ```
-export AIRFLOW_HOME=~/home/tu-user/airflow
+export AIRFLOW_HOME=/home/tu-user/airflow
 ```
 ### Instalar Apache Airflow
 ```
 pip install apache-airflow
 ```
-### Dentro de /airflow crear la carpeta dags
+### Instalar Dotenv 
 ```
-mkdir dags
+pip install python-dotenv
 ```
 ### Inicializar la base de datos de Airflow
 ```
@@ -68,7 +66,15 @@ airflow users create \
 ```
 airflow webserver -p 9090
 ```
-
+### Verificar /home/tu-user/airflow/airflow.cfg
+Dentro de airflow.cfg, verificar directorio correcto para dags folder y modificar load_examples a False
+```
+dags_folder = /home/tu-user/airflow/dags
+```
+```
+load_examples = False
+```
+  
 ### Dentro del entorno virtual, activar el scheduler
 ```
 source airflow_env/bin/activate
@@ -83,7 +89,7 @@ Campos necesarios para formulario de prueba de bache:
 - Ubicación (location)
 
 ### Personalizar captura_data.env de acuerdo a sus datos
-- Obtener las ids y versiones deseadas desde la API de captura
+- Obtener las ids, elements correctos y versiones deseadas desde la API de captura
 ```
 CAPTURA_LOGIN=http://localhost:8080/mf/api/authentication/login
 CAPTURA_LIST=http://localhost:8080/mf/api/document/list
@@ -98,12 +104,19 @@ TYPE_OF_ROAD = element14
 ALTITUDE = element13
 ```
 ### Personalizar cipe_data.env de acuerdo a sus datos
-- observación: superuser se crea al levantar cipe
 ```
 CIPE_POST=http://localhost:8000/api/scientist/
 CIPE_TOKEN=http://localhost:8000/api/get-user-token/
 CIPE_USER=superuser
 CIPE_PASSWORD=superuser
+```
+- observación: superuser se crea al levantar cipe y modificar en cipe el .env.dev
+- Se puede usar otro usuario
+```
+DJANGO_SUPERUSER_PASSWORD=superuser
+```
+```
+DJANGO_SUPERUSER_USERNAME=superuser
 ```
 
 ### Crear Variable "processes_ids" desde la Interfaz Web de Airflow
@@ -118,8 +131,14 @@ CIPE_PASSWORD=superuser
 
 5. Llena los campos requeridos:
 
-   - **Key (Clave)**: Ingresa el nombre de la variable, "processes_ids".
+   - **Key (Clave)**: Ingresa el nombre de la variable, "processed_ids".
 
    - **Value (Valor)**: Ingresa el valor inicial,`[]` (una lista vacía).
 
 6. Haz clic en el botón "Save".
+
+### Ejecutar la tarea
+
+En el apartado dags de la interfaz del airflow aparecera la tarea "airflow-captura-to-cipe" y se podrá ejecutar
+- Para revisar los outputs de test-airflow.py, hacer click en el número que aparece luego de ejecutar la tarea
+- Dentro se pueden revisar los gráficos y consultar los logs de las diferentes tareas
