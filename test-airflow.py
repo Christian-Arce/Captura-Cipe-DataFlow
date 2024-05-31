@@ -23,6 +23,9 @@ ROW_ID = os.getenv("ROW_ID")
 ROWS = os.getenv("ROWS")
 CAPTURA_USER = os.getenv("CAPTURA_USER")
 CAPTURA_PASSWORD = os.getenv("CAPTURA_PASSWORD")
+DESCRIPTION = os.getenv("DESCRIPTION")
+TYPE_OF_ROAD = os.getenv("TYPE_OF_ROAD")
+ALTITUDE = os.getenv("ALTITUDE")
 load_env_file(os.path.join(os.path.dirname(__file__), 'cipe_data.env'))
 CIPE_POST = os.getenv("CIPE_POST")
 CIPE_TOKEN = os.getenv("CIPE_TOKEN")
@@ -119,9 +122,9 @@ def publicar_datos_cipe(**kwargs):
             dominio = random.choice(['example.com', 'test.com', 'domain.com'])
             email = f"{username}@{dominio}"
             print(email)
-            first_name = form["data"]["element15"]
-            last_name = form["data"]["element14"]
-            ci = form["data"]["element13"]["altitude"]
+            first_name = form["data"][DESCRIPTION]
+            last_name = form["data"][TYPE_OF_ROAD]
+            ci = form["data"][ALTITUDE]["altitude"]
             
             # Realizar la solicitud POST a CIPE
             
@@ -154,7 +157,7 @@ def publicar_datos_cipe(**kwargs):
     else:
         print("No se pudieron obtener los datos de captura de la tarea anterior o el token de usuario.")
 
-with DAG('obtener_datos_de_captura', default_args=default_args, schedule_interval=None) as dag:
+with DAG('airflow-captura-to-cipe', default_args=default_args, schedule_interval=None) as dag:
 
     # Tarea para obtener las cookies de autenticación en Captura
     login_task = PythonOperator(
