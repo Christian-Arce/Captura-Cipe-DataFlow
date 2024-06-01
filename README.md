@@ -15,7 +15,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 1. Desde la línea de comandos, crea la carpeta "airflow". Por ejemplo:/home/tu-user/airflow
 
 ```
-mkdir /home/tu-user/airflow/dags
+mkdir /home/tu-user/airflow
 ```
 
 ### Crear y Activar un Entorno Virtual
@@ -119,7 +119,7 @@ DJANGO_SUPERUSER_PASSWORD=superuser
 DJANGO_SUPERUSER_USERNAME=superuser
 ```
 
-### Crear Variable "processes_ids" desde la Interfaz Web de Airflow
+### Crear Variable "processed_ids" desde la Interfaz Web de Airflow
 
 1. Ve a la interfaz web de Airflow.
 
