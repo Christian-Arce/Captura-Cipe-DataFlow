@@ -93,22 +93,30 @@ Campos necesarios para formulario de prueba de bache:
 ```
 CAPTURA_LOGIN=http://localhost:8080/mf/api/authentication/login
 CAPTURA_LIST=http://localhost:8080/mf/api/document/list
-FORM_ID=5
+CAPTURA_IMAGE=http://localhost:8080/mf/api/document/blob
+FORM_ID=7
 VERSION=1
 ROW_ID=0
 ROWS=100
 CAPTURA_USER=chake@feltesq.com
 CAPTURA_PASSWORD=123456
-DESCRIPTION = element15
-TYPE_OF_ROAD = element14
-ALTITUDE = element13
+COMPLAINT_TYPE = element28
+IMAGE = element29
+LOCATION = element30
+DESCRIPTION = element31
+CITY = element32
+TYPE_OF_ROAD = element33
 ```
 ### Personalizar cipe_data.env de acuerdo a sus datos
+- Crear los campos necesarios para las denuncias en http://localhost:8000/admin/api/ y colocar las ids correspondientes
 ```
-CIPE_POST=http://localhost:8000/api/scientist/
+CIPE_POST=http://localhost:8000/api/complaints/
 CIPE_TOKEN=http://localhost:8000/api/get-user-token/
 CIPE_USER=superuser
 CIPE_PASSWORD=superuser
+CITY_ID={"Asunción": 1, "San Lorenzo": 2, "Capiata": 3}
+ROAD_TYPE_ID={"Asfalto": 1, "Empedrado": 2, "Tierra": 3}
+COMPLAINT_TYPE_ID={"Bache": 1, "Parques en mal estado": 2}
 ```
 - observación: superuser se crea al levantar cipe y modificar en cipe el .env.dev
 - Se puede usar otro usuario
