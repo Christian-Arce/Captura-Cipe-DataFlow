@@ -18,7 +18,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 mkdir /home/tu-user/airflow
 ```
 
-### Crear y Activar un Entorno Virtual
+### En /airflow Crear y Activar un Entorno Virtual
 - Crear un nuevo entorno virtual llamado "airflow_env"
 ```
 virtualenv airflow_env
@@ -32,9 +32,9 @@ source airflow_env/bin/activate
 ```
 git clone https://github.com/Christian-Arce/Captura-Cipe-DataFlow.git
 ```
-### Renombrar la carpeta clonada "Captura-Cipe-Dataflow" a "dags"
+### Renombrar la carpeta clonada "Captura-Cipe-DataFlow" a "dags"
 ```
-mv Captura-Cipe-Dataflow dags
+mv Captura-Cipe-DataFlow dags
 ```
 ### Definir la variable de entorno AIRFLOW_HOME
 ```
@@ -84,11 +84,15 @@ airflow scheduler
 ```
 ### Crear formulario en Captura
 Campos necesarios para formulario de prueba de bache:
-- Descripción (caja de texto)
-- Tipo de ruta (desplegable)
-- Ubicación (location)
+- Tipo de Denuncia (Dropdown)
+- Descripción (Text area)
+- Tipo de ruta (Dropdown)
+- Ubicación (Location)
+- Ciudad (Dropdown)
+- Foto (Photo)
 
-### Personalizar captura_data.env de acuerdo a sus datos
+### Personalizar captura_data.env y cipe_data.env en /airflow/dags 
+### captura_data.env
 - Obtener las ids, elements correctos y versiones deseadas desde la API de captura
 ```
 CAPTURA_LOGIN=http://localhost:8080/mf/api/authentication/login
@@ -107,7 +111,7 @@ DESCRIPTION = element31
 CITY = element32
 TYPE_OF_ROAD = element33
 ```
-### Personalizar cipe_data.env de acuerdo a sus datos
+### cipe_data.env 
 - Crear los campos necesarios para las denuncias en http://localhost:8000/admin/api/ y colocar las ids correspondientes
 ```
 CIPE_POST=http://localhost:8000/api/complaints/
