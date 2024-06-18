@@ -4,8 +4,6 @@ from airflow.models import Variable
 from datetime import datetime, timedelta
 import requests
 import json
-import random
-import string
 import os
 import base64
 from dotenv import load_dotenv
@@ -138,7 +136,6 @@ def publicar_datos_cipe(**kwargs):
                 print(f"Formulario con ID {form_id} ya ha sido procesado.")
                 continue
             # Obtener los datos del formulario y mapear a IDs
-            #complaint_description = form["data"][DESCRIPTION]
             complaint_description = form["data"].get(DESCRIPTION)
             if complaint_description is None:
                 complaint_description = "Descripcion no disponible"
@@ -146,14 +143,11 @@ def publicar_datos_cipe(**kwargs):
             complaint_type_road = ROAD_TYPE_ID.get(form["data"][TYPE_OF_ROAD], None)
             complaint_city = CITY_ID.get(form["data"][CITY], None)
             complaint_type = COMPLAINT_TYPE_ID.get(form["data"][COMPLAINT_TYPE], None)
-            #complaint_image = form["data"][IMAGE]["image"]
-            complaint_image = None
+            complaint_image = ""
             if form.get("data") is not None:
                 complaint_image_data = form["data"].get(IMAGE)
                 if complaint_image_data is not None:
                     complaint_image = complaint_image_data.get("image")
-                else:
-                    print("No se encontraron datos en el formulario.")
 
             complaint_altitude = form["data"][LOCATION]["altitude"]
             complaint_latitude = form["data"][LOCATION]["latitude"]
@@ -170,7 +164,7 @@ def publicar_datos_cipe(**kwargs):
                 "altitude": complaint_altitude,
                 "accuracy": complaint_accuracy,
                 "longitude": complaint_longitude,
-                #"photo": complaint_image,
+                "photo_base64": complaint_image,
                 "road_type": complaint_type_road
             }
 
